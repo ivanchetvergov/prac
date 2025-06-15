@@ -3,7 +3,7 @@ project(SearchMinBenchmark)
 
 set(CMAKE_C_STANDARD 11)
 
-# headers 
+# headers
 include_directories(${PROJECT_SOURCE_DIR}/include)
 
 # libs src
@@ -34,4 +34,42 @@ foreach(opt_level O0 O1 O2 Os)
     target_link_libraries(bench_shared_it_${opt_level} search_min_shared)
     set_target_properties(bench_shared_it_${opt_level} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
 endforeach()
+
+if(NOT DEFINED SIZE)
+    set(SIZE 100000)
+endif()
+
+
+message("SIZE: ${SIZE}")
+
+
+add_custom_target(run_all_tests
+    COMMAND mkdir -p ../bench_res
+    COMMAND echo "arr size: ${SIZE}" > ../bench_res/results.txt
+    COMMAND echo "=== STATIC IT O1 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_static_it_O1 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== STATIC REC O1 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_static_rec_O1 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== STATIC IT O2 === " >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_static_it_O2 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== STATIC REC O2 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_static_rec_O2 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== STATIC IT Os ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_static_it_Os ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== STATIC REC Os ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_static_rec_Os ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== SHARED IT O1 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_shared_it_O1 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== SHARED REC O1 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_shared_rec_O1 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== SHARED IT O2 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_shared_it_O2 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== SHARED REC O2 ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_shared_rec_O2 ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== SHARED IT Os ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_shared_it_Os ${SIZE} 2>> ../bench_res/results.txt
+    COMMAND echo "=== SHARED REC Os ===" >> ../bench_res/results.txt
+    COMMAND /usr/bin/time -p ./bench_shared_rec_Os ${SIZE} 2>> ../bench_res/results.txt
+    COMMENT "tests done! file results.txt created..."
+)
 

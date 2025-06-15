@@ -12,11 +12,16 @@ void generate_array(int *arr, long long size){
 }
 
 int main(int argc, char *argv[]){
-	if (argc != 2) return 1;
+	if (argc != 2){
+		printf("wrond data from console!");
+		return 1;
+	}
 
 	long long size = atoll(argv[1]);
 	
-	if (size <= 0 || size > LLONG_MAX / sizeof(int)) {                      	printf("wrong size. set max.\n");                                         	size = LLONG_MAX / sizeof(int);
+	if (size <= 0 || size > LLONG_MAX / sizeof(int)) {
+		printf("wrong size. set max.\n");
+		size = LLONG_MAX / sizeof(int);
 	}
 
 	int *arr = malloc(size * sizeof(int));
@@ -28,7 +33,7 @@ int main(int argc, char *argv[]){
 	generate_array(arr, size);
 	int min_value = find_rec(arr, size);
 
-	printf("array size: %lld | min: %d\n", size, min_value);
+	printf("[REC]: array size: %lld | min: %d\n", size, min_value);
 
 	free(arr);
 	return 0;

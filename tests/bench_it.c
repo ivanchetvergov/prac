@@ -12,7 +12,10 @@ void generate_array(int *arr, long long size){
 }
 
 int main(int argc, char *argv[]){
-	if (argc != 2) return 1;
+	if (argc != 2) {
+		printf("wrond data from console!");
+		return 1;
+	}
 
 	long long size = atoll(argv[1]);
 
@@ -30,7 +33,7 @@ int main(int argc, char *argv[]){
 	generate_array(arr, size);
 	int min_value = find_it(arr, size);
 
-	printf("array size: %lld | min: %d\n", size, min_value);
+	printf("[IT] array size: %lld | min: %d\n", size, min_value);
 
 	free(arr);
 	return 0;
