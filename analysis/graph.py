@@ -16,4 +16,4 @@ plt.legend()
 plt.grid()
 
 plt.savefig("analysis/results_plot.png", bbox_inches="tight")
-print("graph saved in analysis/results_plot.png")
+print("graph saved in analysis/results_plot1.png")

@@ -84,11 +84,14 @@ void run_ui() {
             STUDENT *loaded_students = NULL;
             int loaded_count = 0;
 
-            int res = load_DB("/prac/students.db", &header, &loaded_students, &loaded_count);
+            int res = load_DB("/prac/assets/students.db", &header, \ 
+			    &loaded_students, &loaded_count);
             if (res == 0) {
-                memcpy(students, loaded_students, sizeof(STUDENT) * loaded_count);
+                memcpy(students, loaded_students, \ 
+				sizeof(STUDENT) * loaded_count);
                 student_count = loaded_count;
-                mvprintw(10, 2, "loaded %d students successfully!", student_count);
+                mvprintw(10, 2, "loaded %d students successfully!", \ 
+				student_count);
             } else {
                 mvprintw(10, 2, "error loading from db!");
             }
@@ -110,7 +113,7 @@ void run_ui() {
     noecho();
 
     if (c == 'Y' || c == 'y') {
-        int res = save_DB("/prac/students.db", &header, students, student_count);
+        int res = save_DB("/prac/assets/students.db", &header, students, student_count);
         if (res == 0) {
             mvprintw(11, 2, "saved successfully!");
         } else {
