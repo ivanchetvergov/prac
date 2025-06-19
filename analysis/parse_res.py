@@ -1,8 +1,9 @@
+# parse_res.py
 import re
 import pandas as pd
 from pathlib import Path
 
-project_root = Path(__file__).resolve().parents[1]  # укажет на ~/praci
+project_root = Path(__file__).resolve().parents[1]
 
 input_path = project_root / "assets/raw_res"
 output_dir = project_root / "assets/data_tables"
@@ -38,7 +39,7 @@ def parse_line(line: str):
     }
 
 # for loop in every test
-for test in ("static", "shared", "dl"):
+for test in ("static", "shared", "dlopen"):
     file_path = input_path / f"{test}.txt"
     if not file_path.exists(): continue
 
@@ -59,3 +60,6 @@ for test in ("static", "shared", "dl"):
     df = pd.DataFrame(parsed_data)
     df.to_csv(csv_path, index = False)
     print(f"saved in {csv_path}")
+
+
+  

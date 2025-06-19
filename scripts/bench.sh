@@ -1,5 +1,6 @@
 #run_all_bench.sh
 
+
 PROJECT_DIR=$(dirname "$(realpath "$0")")/..
 RAW_RES_DIR="${PROJECT_DIR}/assets/raw_res"
 
@@ -12,12 +13,13 @@ parse_output() {
 
 echo "starting all benchs..."
 
-types_of_links=("static" "shared" "dl")
+types_of_links=("static" "shared" "dlopen")
 
 cd build
 
-for type in "${types_of_links}"; do
-  echo  > "${RAW_RES_DIR}/${type}.txt"
+for type in "${types_of_links[@]}"; do
+  # reset file
+  : > "${RAW_RES_DIR}/${type}.txt"
   for test in $(ctest -N -R "^${type}" | grep -E "Test #|Test  #" | awk '{print $3}'); do
     echo "${test} done."
     temp=$(mktemp)
