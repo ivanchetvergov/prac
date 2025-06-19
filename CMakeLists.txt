@@ -10,7 +10,7 @@ link_directories(${PROJECT_SOURCE_DIR}/libs)
 
 # def size
 if(NOT DEFINED SIZE)
-    set(SIZE 100000)
+  set(SIZE 100000)
 endif()
 
 message("arr size: ${SIZE}")
@@ -21,21 +21,21 @@ set(OPT_LEVELS O0 O1 O2 Os)
 
 # === static & shared link ===
 foreach(opt_level IN LISTS OPT_LEVELS)
-    foreach(link_type IN ITEMS static shared)
-        foreach(mode IN ITEMS it rec)
-            # env.. etc
-            set(exec_name bench_${link_type}_${mode}_${opt_level})
-            set(source_file ${PROJECT_SOURCE_DIR}/tests/bench_${mode}.c)
-            set(lib_name search_min_${link_type})
-            set(test_name ${link_type}_${mode}_${opt_level})
-            #compile
-            add_executable(${exec_name} ${source_file})
-            target_link_libraries(${exec_name} ${lib_name})
-            set_target_properties(${exec_name} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
+  foreach(link_type IN ITEMS static shared)
+    foreach(mode IN ITEMS it rec)
+      # env.. etc
+      set(exec_name bench_${link_type}_${mode}_${opt_level})
+      set(source_file ${PROJECT_SOURCE_DIR}/tests/bench_${mode}.c)
+      set(lib_name search_min_${link_type})
+      set(test_name ${link_type}_${mode}_${opt_level})
+      #compile
+      add_executable(${exec_name} ${source_file})
+      target_link_libraries(${exec_name} ${lib_name})
+      set_target_properties(${exec_name} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
         
-            add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
-        endforeach()
+      add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
     endforeach()
+  endforeach()
 endforeach()
 
 # === dlopen ===
@@ -50,15 +50,22 @@ foreach(mode IN ITEMS it rec)
     add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
 endforeach()
 
-add_custom_target(run_all_benchmarks
-    COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/run_all_bench.sh
-    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-    COMMENT "running all benchmarks (static, shared, dlopen) and logging to assets/raw_res"
+add_custom_target(bench
+  COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/bench.sh
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+  COMMENT "running all benchmarks (static, shared, dlopen)"
 )
 
-add_custom_target(run_static_tests
-  COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/run_static_tests.sh
+add_custom_target(count_size
+  COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/sizeof_files.sh ${SIZE}
   WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-  COMMENT "running static tests with timing and logging to assets/raw_res"
+  COMMENT "running calculating count_size"
 )
+
+add_custom_target(parse
+
+
+
+)
+
 

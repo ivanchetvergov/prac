@@ -17,7 +17,7 @@ types_of_links=("static" "shared" "dl")
 cd build
 
 for type in "${types_of_links}"; do
-  echo " " > "${RAW_RES_DIR}/${type}.txt"
+  echo  > "${RAW_RES_DIR}/${type}.txt"
   for test in $(ctest -N -R "^${type}" | grep -E "Test #|Test  #" | awk '{print $3}'); do
     echo "${test} done."
     temp=$(mktemp)
