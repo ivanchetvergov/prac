@@ -2,74 +2,63 @@ cmake_minimum_required(VERSION 3.10)
 project(SearchMinBenchmark)
 
 set(CMAKE_C_STANDARD 11)
+enable_testing()
 
-# headers
+# dir
 include_directories(${PROJECT_SOURCE_DIR}/include)
-
-# libs src
 link_directories(${PROJECT_SOURCE_DIR}/libs)
 
-# bench files
-set(BENCH_REC tests/bench_rec.c)
-set(BENCH_IT tests/bench_it.c)
-
-# static bench
-foreach(opt_level O0 O1 O2 Os)
-    add_executable(bench_static_rec_${opt_level} ${BENCH_REC})
-    target_link_libraries(bench_static_rec_${opt_level} search_min_static)
-    set_target_properties(bench_static_rec_${opt_level} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
-
-    add_executable(bench_static_it_${opt_level} ${BENCH_IT})
-    target_link_libraries(bench_static_it_${opt_level} search_min_static)
-    set_target_properties(bench_static_it_${opt_level} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
-endforeach()
-
-# shared bench
-foreach(opt_level O0 O1 O2 Os)
-    add_executable(bench_shared_rec_${opt_level} ${BENCH_REC})
-    target_link_libraries(bench_shared_rec_${opt_level} search_min_shared)
-    set_target_properties(bench_shared_rec_${opt_level} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
-
-    add_executable(bench_shared_it_${opt_level} ${BENCH_IT})
-    target_link_libraries(bench_shared_it_${opt_level} search_min_shared)
-    set_target_properties(bench_shared_it_${opt_level} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
-endforeach()
-
+# def size
 if(NOT DEFINED SIZE)
     set(SIZE 100000)
 endif()
 
+message("arr size: ${SIZE}")
 
-message("SIZE: ${SIZE}")
+file(MAKE_DIRECTORY ${PROJECT_SOURCE_DIR}/assets/raw_res)
 
+set(OPT_LEVELS O0 O1 O2 Os)
 
-add_custom_target(run_all_tests
-    COMMAND mkdir -p ../bench_res
-    COMMAND echo "arr size: ${SIZE}" > ../bench_res/results.txt
-    COMMAND echo "=== STATIC IT O1 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_static_it_O1 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== STATIC REC O1 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_static_rec_O1 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== STATIC IT O2 === " >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_static_it_O2 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== STATIC REC O2 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_static_rec_O2 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== STATIC IT Os ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_static_it_Os ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== STATIC REC Os ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_static_rec_Os ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== SHARED IT O1 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_shared_it_O1 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== SHARED REC O1 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_shared_rec_O1 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== SHARED IT O2 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_shared_it_O2 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== SHARED REC O2 ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_shared_rec_O2 ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== SHARED IT Os ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_shared_it_Os ${SIZE} 2>> ../bench_res/results.txt
-    COMMAND echo "=== SHARED REC Os ===" >> ../bench_res/results.txt
-    COMMAND /usr/bin/time -p ./bench_shared_rec_Os ${SIZE} 2>> ../bench_res/results.txt
-    COMMENT "tests done! file results.txt created..."
+# === static & shared link ===
+foreach(opt_level IN LISTS OPT_LEVELS)
+    foreach(link_type IN ITEMS static shared)
+        foreach(mode IN ITEMS it rec)
+            # env.. etc
+            set(exec_name bench_${link_type}_${mode}_${opt_level})
+            set(source_file ${PROJECT_SOURCE_DIR}/tests/bench_${mode}.c)
+            set(lib_name search_min_${link_type})
+            set(test_name ${link_type}_${mode}_${opt_level})
+            #compile
+            add_executable(${exec_name} ${source_file})
+            target_link_libraries(${exec_name} ${lib_name})
+            set_target_properties(${exec_name} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
+        
+            add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
+        endforeach()
+    endforeach()
+endforeach()
+
+# === dlopen ===
+foreach(mode IN ITEMS it rec)
+    set(exec_name bench_dlopen_${mode})
+    set(source_file ${PROJECT_SOURCE_DIR}/tests/bench_dlopen_${mode}.c)
+    set(test_name dlopen_${mode})
+
+    add_executable(${exec_name} ${source_file})
+    target_link_libraries(${exec_name} dl)
+
+    add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
+endforeach()
+
+add_custom_target(run_all_benchmarks
+    COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/run_all_bench.sh
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+    COMMENT "running all benchmarks (static, shared, dlopen) and logging to assets/raw_res"
+)
+
+add_custom_target(run_static_tests
+  COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/run_static_tests.sh
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+  COMMENT "running static tests with timing and logging to assets/raw_res"
 )
 

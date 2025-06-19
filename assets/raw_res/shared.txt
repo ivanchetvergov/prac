@@ -1,0 +1,9 @@
+ 
+shared_it_O0 : 0.00 0.00 0.00 
+shared_rec_O0 : 0.00 0.00 0.00 
+shared_it_O1 : 0.00 0.00 0.00 
+shared_rec_O1 : 0.00 0.00 0.00 
+shared_it_O2 : 0.00 0.00 0.00 
+shared_rec_O2 : 0.00 0.00 0.00 
+shared_it_Os : 0.00 0.00 0.00 
+shared_rec_Os : 0.00 0.00 0.00 

@@ -16,7 +16,8 @@ void input_student() {
     mvprintw(1, 2, "input new student:");
 
     mvprintw(3, 4, "surname and initials: ");
-    echo(); getnstr(s.name, MAX_NAME_LEN - 1);
+    echo(); 
+    getnstr(s.name, MAX_NAME_LEN - 1);
 
     mvprintw(5, 4, "number of group: ");
     getnstr(s.group, MAX_GROUP_LEN - 1);
