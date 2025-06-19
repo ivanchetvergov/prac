@@ -1,8 +1,8 @@
-shared_it_O0 : 0.61 0.60 0.00 
-shared_rec_O0 : 2.79 0.90 0.89 
-shared_it_O1 : 0.66 0.60 0.01 
-shared_rec_O1 : 2.73 0.90 0.83 
-shared_it_O2 : 0.67 0.59 0.02 
-shared_rec_O2 : 2.74 0.84 0.77 
-shared_it_Os : 0.68 0.63 0.00 
-shared_rec_Os : 2.72 0.88 0.78 
+shared_it_O0 : 0.55 0.54 0.00 
+shared_rec_O0 : 8.20 1.82 1.30 
+shared_it_O1 : 0.58 0.54 0.01 
+shared_rec_O1 : 8.15 1.66 1.58 
+shared_it_O2 : 1.02 0.90 0.07 
+shared_rec_O2 : 8.49 1.85 2.02 
+shared_it_Os : 0.58 0.54 0.01 
+shared_rec_Os : 7.70 1.63 1.36 

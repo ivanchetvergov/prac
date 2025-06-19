@@ -62,10 +62,14 @@ add_custom_target(count_size
   COMMENT "running calculating count_size"
 )
 
-add_custom_target(parse
-
-
-
+add_custom_target(parse_and_build_graph
+  COMMAND bash ${PROJECT_SOURCE_DIR}/scripts/parse_and_build_graph.sh
+  WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
+  COMMENT "parse raw res and build graph"
 )
 
+add_custom_target(full_cycle
+  DEPENDS bench count_size parse_and_build_graph
+  COMMENT "full cycle is done!"
+)
 

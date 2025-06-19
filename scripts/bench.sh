@@ -16,6 +16,7 @@ echo "starting all benchs..."
 types_of_links=("static" "shared" "dlopen")
 
 cd build
+ulimit -s unlimited
 
 for type in "${types_of_links[@]}"; do
   # reset file
