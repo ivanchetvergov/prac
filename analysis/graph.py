@@ -27,29 +27,29 @@ if not data: exit(1)
 full_df = pd.concat(data, ignore_index=True)
 full_df["label"] = full_df["source"] + " " + full_df["test_name"]
 
-# sorting 
+# sorting OX labels
 full_df = full_df.sort_values("label")
 
 # drawing
 fig, ax1 = plt.subplots(figsize=(14, 7))
 
 x = full_df["label"]
-
+# building first OY (time)
 ax1.plot(x, full_df["real"], marker="o", label="real")
 ax1.plot(x, full_df["user"], marker="o", label="user")
 ax1.plot(x, full_df["sys"], marker="o", label="sys")
-
+# set up OX and label
 ax1.set_xlabel("test name")
 ax1.set_ylabel("time (sec)")
 ax1.tick_params(axis="x", rotation=45)
 ax1.legend(loc="upper left")
-
+# building second OY (size)
 ax2 = ax1.twinx()
 ax2.plot(x, full_df["file_size"], marker="x", linestyle="--", color="gray", label="file_size")
 ax2.set_ylabel("file size (bytes)")
 ax2.legend(loc="upper right")
 
-plt.title("performance: real/user/sys time + file size")
+plt.title(f"performance for arr_size{filename}")
 plt.tight_layout()
 plt.savefig(output_dir / f"{filename}_graph.png")
     

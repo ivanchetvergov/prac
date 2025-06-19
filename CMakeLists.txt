@@ -8,6 +8,9 @@ enable_testing()
 include_directories(${PROJECT_SOURCE_DIR}/include)
 link_directories(${PROJECT_SOURCE_DIR}/libs)
 
+# database app 
+add_subdirectory(database_app)
+
 # def size
 if(NOT DEFINED SIZE)
   set(SIZE 100000)

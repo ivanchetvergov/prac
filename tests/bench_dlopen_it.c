@@ -5,10 +5,10 @@
 #include <dlfcn.h>
 
 void generate_array(int *arr, long long size){
-    srand(time(NULL));
-    for (long long i = 0; i < size; ++i){
-        arr[i] = (rand() % 20001) - 10000;
-    }
+  srand(time(NULL));
+  for (long long i = 0; i < size; ++i){
+    arr[i] = (rand() % 20001) - 10000;
+  }
 }
 
 int main(int argc, char *argv[]){
