@@ -1,6 +1,15 @@
-arr size: 33333333333333333
+arr size: 33333333
 bench_shared_it_Os : 70848
+bench_shared_rec_Os : 70856
+bench_static_rec_O0 : 71096
+bench_shared_rec_O0 : 70856
+bench_shared_rec_O2 : 70880
+bench_static_rec_O1 : 71096
+bench_static_rec_Os : 71096
 bench_shared_it_O2 : 70880
+bench_dlopen_rec : 71024
+bench_static_rec_O2 : 71120
+bench_shared_rec_O1 : 70856
 bench_static_it_O1 : 71088
 bench_dlopen_it : 71016
 bench_static_it_Os : 71088
