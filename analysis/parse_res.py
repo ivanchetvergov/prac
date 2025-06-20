@@ -61,5 +61,6 @@ for test in ("static", "shared", "dlopen"):
     df.to_csv(csv_path, index = False)
     print(f"saved in {csv_path}")
 
+print(f"parsing is done!!!")
 
   

@@ -16,3 +16,6 @@ target_link_libraries(student_db PRIVATE ncurses z)
 set_target_properties(student_db PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin
 )
+
+
+

@@ -32,25 +32,31 @@ foreach(opt_level IN LISTS OPT_LEVELS)
       set(lib_name search_min_${link_type})
       set(test_name ${link_type}_${mode}_${opt_level})
       #compile
-      add_executable(${exec_name} ${source_file})
-      target_link_libraries(${exec_name} ${lib_name})
-      set_target_properties(${exec_name} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
-        
-      add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
+      if ("${mode}" STREQUAL "rec" AND "${SIZE}" GREATER 10000000)
+        message("${test_name} skipped: arr size to big!")
+      else()
+        add_executable(${exec_name} ${source_file})
+        target_link_libraries(${exec_name} ${lib_name})
+        set_target_properties(${exec_name} PROPERTIES COMPILE_OPTIONS "-${opt_level}")
+        add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
+      endif()
     endforeach()
   endforeach()
 endforeach()
 
 # === dlopen ===
 foreach(mode IN ITEMS it rec)
-    set(exec_name bench_dlopen_${mode})
-    set(source_file ${PROJECT_SOURCE_DIR}/tests/bench_dlopen_${mode}.c)
-    set(test_name dlopen_${mode})
+  set(exec_name bench_dlopen_${mode})
+  set(source_file ${PROJECT_SOURCE_DIR}/tests/bench_dlopen_${mode}.c)
+  set(test_name dlopen_${mode})
 
+  if(${mode} STREQUAL "rec" AND ${SIZE} GREATER 10000000)
+    message("${test_name} skipped: arr size to big).")
+  else()
     add_executable(${exec_name} ${source_file})
     target_link_libraries(${exec_name} dl)
-
     add_test(NAME ${test_name} COMMAND ${exec_name} ${SIZE})
+  endif()
 endforeach()
 
 add_custom_target(bench

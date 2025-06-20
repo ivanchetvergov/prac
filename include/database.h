@@ -1,3 +1,6 @@
+#ifndef DATABASE_H
+#define DATABASE_H
+
 #include <stdint.h>
 #include "student.h"
 
@@ -11,3 +14,5 @@ typedef struct {
 int save_DB(const char* path, DB* db, STUDENT* students, int count);
 
 int load_DB(const char* path, DB* db, STUDENT** students, int* count);
+
+#endif

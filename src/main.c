@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "../include/student_ui.h"
-#include "../include/factorial.h"
+#include <student_ui.h>
 #include <stdlib.h>
 
 int main(int argc, char **argv) {
