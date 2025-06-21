@@ -1,1 +1,0 @@
-/usr/bin/cc CMakeFiles/student_db.dir/__/src/main.c.o CMakeFiles/student_db.dir/__/src/database.c.o CMakeFiles/student_db.dir/__/src/student_ui.c.o -o bin/student_db   -L/home/ivanchetvergov/prac/libs  -Wl,-rpath,/home/ivanchetvergov/prac/libs -lncurses -lz 

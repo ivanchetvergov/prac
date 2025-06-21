@@ -49,7 +49,7 @@ ax2.plot(x, full_df["file_size"], marker="x", linestyle="--", color="gray", labe
 ax2.set_ylabel("file size (bytes)")
 ax2.legend(loc="upper right")
 
-plt.title(f"performance for arr_size{filename}")
+plt.title(f"performance for arr size: {filename}")
 plt.tight_layout()
 plt.savefig(output_dir / f"{filename}_graph.png")
     
