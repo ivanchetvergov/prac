@@ -2,10 +2,13 @@
 #include <string.h>
 #include <student.h>
 #include <database.h>
+#include <student_backend.h>
+#include <locale.h>
 
 #define MAX_STUDENTS 50
 
-DB header; // database header
+DB header;
+const char* DBpath = "/home/ivanchetvergov/prac/assets/students.db";
 STUDENT students[MAX_STUDENTS]; // arr of stud
 int student_count = 0;
 
@@ -57,6 +60,7 @@ void draw_student_table() {
 }
 
 void run_ui() {
+  //setlocale(LC_ALL, "");
   initscr(); // make window
   cbreak(); // off buff. can input wout enter
   noecho(); // hide input
@@ -69,9 +73,11 @@ void run_ui() {
     mvprintw(3, 4, "1. add student");
     mvprintw(4, 4, "2. show students");
     mvprintw(5, 4, "3. load from db");
-    mvprintw(6, 4, "4. exit");
+    mvprintw(6, 4, "4. sort by avg grade");
+    mvprintw(7, 4, "5. gen n new users");
+    mvprintw(8, 4, "6. exit");
 
-    mvprintw(8, 2, "choice: ");
+    mvprintw(9, 2, "choice: ");
     echo();
     scanw("%d", &choice);
     noecho();
@@ -82,8 +88,7 @@ void run_ui() {
       STUDENT *loaded_students = NULL;
       int loaded_count = 0;
 
-      int res = load_DB("/home/ivanchetvergov/prac/assets/students.db", \
-          &header, &loaded_students, &loaded_count);
+      int res = load_DB(DBpath, &header, &loaded_students, &loaded_count);
 
       if (res == 0) {
         memcpy(students, loaded_students, sizeof(STUDENT) * loaded_count);
@@ -92,7 +97,28 @@ void run_ui() {
       } else {
         mvprintw(10, 2, "error loading from db!");
       }
-    } else if (choice == 4) break;
+    }
+
+    else if (choice == 4) {
+      sort(); 
+      mvprintw(10, 2, "sorted by average grade!");
+    }  
+    
+    else if(choice == 5){
+      mvprintw(10, 2, "enter n: ");
+      int n;
+      echo();
+      scanw("%d", &n);
+      if (n > MAX_STUDENTS - student_count) break;
+      if (n >= 1){
+        for (int i = 0; i < n; ++i){
+          students[student_count++] = gen_new();
+        }
+        mvprintw(11, 2, "gen is done!");
+      }
+    }
+
+    else if (choice == 6) break;
 
     refresh(); // update screen
     getch(); // input
@@ -108,8 +134,7 @@ void run_ui() {
   noecho();
 
   if (c == 'Y' || c == 'y') {
-    int res = save_DB("/home/ivanchetvergov/prac/assets/students.db", \
-        &header, students, student_count);
+    int res = save_DB(DBpath, &header, students, student_count);
     if (res == 0) {
       mvprintw(11, 2, "saved successfully!");
     } else mvprintw(11, 2, "error while saving!");
