@@ -4,4 +4,4 @@ build/
 venv/
 Testing/
 *csv
-database_app/
+build_db/

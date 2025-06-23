@@ -1,2 +1,2 @@
 
-tree -I "build|venv|Testing" -L 2
+tree -I "build_db|build|venv|Testing" -L 2

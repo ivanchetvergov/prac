@@ -2,19 +2,18 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include <string.h>
 #include <unistd.h>    
 #include <student_backend.h>
 
 static void gen_group(char* buffer, size_t size){
   const char* institutes[] = {
-      "ИКНК", "ФИЗИМЕХ", "ИСИ", "ГУ", "ИММИТ", "ИЭТ", "ИПМЭИТ", "ИСИТ"
-  };
+  "SCS", "PPE", "LAW", "MATH", "HIS", "ENG", "PHIL", "ARTS", "ECON", 
+  "CHEM", "PHYS", "BIO","STAT", "CS", "AI" };
 
-  int inst_count = sizeof(institutes) / sizeof(institutes[0]);
 
-  srand(time(NULL));
+  const int inst_count = sizeof(institutes) / sizeof(institutes[0]);
+
   int id = rand() % inst_count;
   int group_num = 100 + rand() % 400;
 
@@ -29,7 +28,7 @@ STUDENT gen_new() {
 
   if (!fp || !fgets(s.name, MAX_NAME_LEN, fp)) {
     pclose(fp);
-    snprintf(s.name, MAX_NAME_LEN, "Иванов Иван");
+    snprintf(s.name, MAX_NAME_LEN, "Ivan Ivanov");
   } else {
     s.name[strcspn(s.name, "\n")] = 0;
     pclose(fp);

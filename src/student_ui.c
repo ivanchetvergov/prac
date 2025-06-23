@@ -1,9 +1,12 @@
 #include <ncurses.h>
 #include <string.h>
+#include <time.h>
+#include <stdlib.h>
+
 #include <student.h>
 #include <database.h>
 #include <student_backend.h>
-#include <locale.h>
+
 
 #define MAX_STUDENTS 50
 
@@ -43,10 +46,10 @@ void draw_student_table() {
   clear(); // clear screen
   mvprintw(1, 2, "MENU:");
   mvprintw(2, 2, "table of students:");
-  mvprintw(3, 2, "  idx | surname          | group          | grades");
+  mvprintw(3, 2, "  idx | surname          | group    | grades");
 
   for (int i = 0; i < student_count; ++i) {
-    mvprintw(5 + i, 2, "  %-3d | %-16s | %-14s | ", i + 1,
+    mvprintw(5 + i, 2, "  %-3d | %-16s | %-8s | ", i + 1,
     students[i].name, students[i].group); // draw stud
     
     for (int j = 0; j < MAX_MARKS; ++j) {
@@ -60,11 +63,10 @@ void draw_student_table() {
 }
 
 void run_ui() {
-  //setlocale(LC_ALL, "");
   initscr(); // make window
   cbreak(); // off buff. can input wout enter
   noecho(); // hide input
-  keypad(stdscr, TRUE); // special keys
+  srand(time(NULL));
 
   int choice;
   while (true) {
@@ -77,7 +79,7 @@ void run_ui() {
     mvprintw(7, 4, "5. gen n new users");
     mvprintw(8, 4, "6. exit");
 
-    mvprintw(9, 2, "choice: ");
+    mvprintw(10, 2, "choice: ");
     echo();
     scanw("%d", &choice);
     noecho();
